@@ -32,7 +32,7 @@ if (
   !environment.apiUsername ||
   !environment.apiPassword
 ) {
-  throw new Error(
-    'Missing required environment variables. Check your .env file.'
-  );
+ throw new Error(
+  'Missing required environment variables. Verify API_BASE_URL, API_USERNAME, and API_PASSWORD are configured.'
+);
 }
