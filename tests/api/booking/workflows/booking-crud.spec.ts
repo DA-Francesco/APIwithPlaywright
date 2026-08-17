@@ -1,6 +1,4 @@
-import { AuthClient } from '../../../../clients/auth.client';
-import { test, expect } from '@playwright/test';
-import { BookingClient } from '../../../../clients/booking.client';
+import { test, expect } from '../../../../fixtures/api.fixture';
 import { validBookingData } from '../../../../data/booking.data';
 
 /**
@@ -20,14 +18,7 @@ import { validBookingData } from '../../../../data/booking.data';
  */
 test.describe('Booking API - CRUD Workflow', () => {
 
-  test('should create, retrieve, update and delete a booking', async ({ request }) => {
-
-  // Authenticate before performing operations that require authorization.
-  const authClient = new AuthClient(request);
-  const token = await authClient.getAuthToken();
-
-  // Initialize the Booking API client with the authentication token.
-  const bookingClient = new BookingClient(request, token);
+  test('should create, retrieve, update and delete a booking', async ({ bookingClient }) => {
 
     // ---------------------------------------------------------
     // 1. CREATE BOOKING
