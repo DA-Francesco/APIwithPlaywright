@@ -1,18 +1,28 @@
 {
   "name": "apiwithplaywright",
   "version": "1.0.0",
-  "description": "",
+  "description": "API automation testing framework using Playwright and TypeScript",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "playwright test tests/api",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "api-testing",
+    "api-automation",
+    "typescript",
+    "qa",
+    "automation-testing"
+  ],
+  "author": "Francis Dias",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "@types/node": "^26.2.0"
-  },
-  "dependencies": {
-    "node.js": "^0.0.1-security"
   }
 }
