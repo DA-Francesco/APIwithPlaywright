@@ -8,6 +8,8 @@ import {
 expectJsonContentType,
 } from '../../../utils/api.assertions';
 
+test.describe('Booking API - CRUD Workflow @smoke @regression', () => {
+
 test('should create a new booking', async ({ bookingClient }) => {
 
   // ---------------------------------------------------------
@@ -61,5 +63,8 @@ expect(validatedBookingResponse.booking.depositpaid)
 
 expect(validatedBookingResponse.bookingid)
   .toBeGreaterThan(0);
+
+});
+
 
 });

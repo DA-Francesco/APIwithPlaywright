@@ -12,7 +12,7 @@ import {
   bookingSchema,
 } from '../../../schemas/booking.schema';
 
-test.describe('Booking API - GET', () => {
+test.describe('Booking API - GET @smoke @regression', () => {
 
 test('should retrieve all bookings', async ({ bookingClient }) => {
 

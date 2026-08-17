@@ -16,7 +16,7 @@ import { validBookingData } from '../../../../data/booking.data';
  * The booking ID is generated dynamically during execution,
  * so the test does not depend on hardcoded test data.
  */
-test.describe('Booking API - CRUD Workflow', () => {
+test.describe('Booking API - CRUD Workflow @regression', () => {
 
   test('should create, retrieve, update and delete a booking', async ({ bookingClient }) => {
 

@@ -4,7 +4,7 @@ import {
   expectStatus,
 } from '../../../../utils/api.assertions';
 
-test.describe('Booking API - Negative Scenarios', () => {
+test.describe('Booking API - Negative Scenarios @regression', () => {
 
   test('should return 404 when retrieving a non-existent booking', async ({
     bookingClient,

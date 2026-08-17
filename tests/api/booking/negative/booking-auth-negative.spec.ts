@@ -3,7 +3,7 @@ import {
   expectStatus,
 } from '../../../../utils/api.assertions';
 
-test.describe('Booking API - Authentication Negative Scenarios', () => {
+test.describe('Booking API - Authentication Negative Scenarios @regression', () => {
 
   test('should reject booking update without authentication', async ({
     bookingClient,

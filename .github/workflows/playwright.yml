@@ -9,16 +9,17 @@ name: API Automation Tests
 # Pipeline triggers
 # ------------------------------------------------------------
 
-# Run the pipeline whenever code is pushed to main.
 on:
   push:
     branches:
       - main
 
-  # Also run the pipeline when a Pull Request targets main.
   pull_request:
     branches:
       - main
+
+  # Allows the workflow to be started manually from GitHub.
+  workflow_dispatch:
 
 
 # ------------------------------------------------------------
@@ -35,10 +36,8 @@ jobs:
     # GitHub-hosted Ubuntu machine.
     runs-on: ubuntu-latest
 
-  # Environment variables required by the framework.
-    #
-    # The actual values are stored in GitHub Secrets and are
-    # therefore not committed to the repository.
+    # Environment variables required by the framework.
+    # Actual values are stored in GitHub Secrets.
     env:
       API_BASE_URL: ${{ secrets.API_BASE_URL }}
       API_USERNAME: ${{ secrets.API_USERNAME }}
@@ -69,8 +68,6 @@ jobs:
       # 3. Install project dependencies
       # ------------------------------------------------------
 
-      # npm ci installs dependencies exactly according to
-      # package-lock.json and is preferred for CI environments.
       - name: Install dependencies
         run: npm ci
 
@@ -79,8 +76,6 @@ jobs:
       # 4. Install Playwright dependencies
       # ------------------------------------------------------
 
-      # The --with-deps option installs Playwright browsers
-      # and the required Linux system dependencies.
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
@@ -89,30 +84,30 @@ jobs:
       # 5. TypeScript validation
       # ------------------------------------------------------
 
-      # This validates the entire TypeScript project without
-      # generating JavaScript files.
       - name: TypeScript validation
         run: npx tsc --project tsconfig.json --noEmit
 
 
       # ------------------------------------------------------
-      # 6. Execute API automation tests
+      # 6. Execute smoke tests
       # ------------------------------------------------------
 
-      # Run only the framework API tests.
-      #
-      # The old APItestingGETexample.spec.ts file was removed,
-      # therefore tests/api contains the actual framework tests.
-      - name: Run API tests
-        run: npm run test:api
+      - name: Run API smoke tests
+        run: npm run test:smoke
 
 
       # ------------------------------------------------------
-      # 7. Upload Playwright report
+      # 7. Execute regression tests
       # ------------------------------------------------------
 
-      # Upload the report even when tests fail so that failures
-      # can be investigated from GitHub Actions.
+      - name: Run API regression tests
+        run: npm run test:regression
+
+
+      # ------------------------------------------------------
+      # 8. Upload Playwright report
+      # ------------------------------------------------------
+
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
