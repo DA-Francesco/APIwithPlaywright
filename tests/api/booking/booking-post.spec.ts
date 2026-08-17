@@ -1,33 +1,65 @@
-import { test, expect } from '@playwright/test';
-import { BookingClient } from '../../../clients/booking.client';
+import { test, expect } from '../../../fixtures/api.fixture';
 import { validBookingData } from '../../../data/booking.data';
+import { createBookingResponseSchema } from '../../../schemas/booking.schema';
+import {
+  expectStatus,
+  expectResponseOk,
+  expectSchema,
+expectJsonContentType,
+} from '../../../utils/api.assertions';
 
-test.describe('Booking API - POST', () => {
+test('should create a new booking', async ({ bookingClient }) => {
 
-  test('should create a new booking successfully', async ({ request }) => {
+  // ---------------------------------------------------------
+  // 1. CREATE BOOKING
+  // ---------------------------------------------------------
 
-    const bookingClient = new BookingClient(request);
+  // Send the POST request using the reusable BookingClient.
+  const response = await bookingClient.createBooking(validBookingData);
 
-    const response = await bookingClient.createBooking(validBookingData);
+  // Convert the API response into a JavaScript object.
+  // This object will be reused for all response validations.
+  const responseBody = await response.json();
 
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
+  // ---------------------------------------------------------
+//  2. HTTP RESPONSE ASSERTIONS
+// ---------------------------------------------------------
 
-    const responseBody = await response.json();
+// Verify the HTTP status code.
+expectStatus(response, 200);
 
-    expect(responseBody).toHaveProperty('bookingid');
-    expect(responseBody.bookingid).toEqual(expect.any(Number));
+// Verify that Playwright considers the response successful.
+expectResponseOk(response);
 
-    expect(responseBody.booking.firstname).toBe(validBookingData.firstname);
-    expect(responseBody.booking.lastname).toBe(validBookingData.lastname);
-    expect(responseBody.booking.totalprice).toBe(validBookingData.totalprice);
-    expect(responseBody.booking.depositpaid).toBe(validBookingData.depositpaid);
+// Verify that the response is returned as JSON.
+expectJsonContentType(response);
 
-    expect(responseBody.booking.bookingdates.checkin)
-      .toBe(validBookingData.bookingdates.checkin);
+// ---------------------------------------------------------
+// 3.  SCHEMA VALIDATION
+// ---------------------------------------------------------
 
-    expect(responseBody.booking.bookingdates.checkout)
-      .toBe(validBookingData.bookingdates.checkout);
-  });
+const validatedBookingResponse = expectSchema(
+  responseBody,
+  createBookingResponseSchema
+);
+
+  // ---------------------------------------------------------
+// 4. BUSINESS DATA ASSERTIONS
+// ---------------------------------------------------------
+
+expect(validatedBookingResponse.booking.firstname)
+  .toBe(validBookingData.firstname);
+
+expect(validatedBookingResponse.booking.lastname)
+  .toBe(validBookingData.lastname);
+
+expect(validatedBookingResponse.booking.totalprice)
+  .toBe(validBookingData.totalprice);
+
+expect(validatedBookingResponse.booking.depositpaid)
+  .toBe(validBookingData.depositpaid);
+
+expect(validatedBookingResponse.bookingid)
+  .toBeGreaterThan(0);
 
 });
