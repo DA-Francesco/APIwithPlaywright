@@ -1,192 +1,247 @@
-## AI-Assisted Framework Development
+# 🚀 Playwright TypeScript API Automation Framework
 
-This framework was built from scratch using **Playwright, TypeScript, and API automation best practices**. I used **ChatGPT as an AI-assisted development and review tool** throughout the implementation.
+A **maintainable and scalable API automation framework** built from scratch using **Playwright, TypeScript, and Node.js**, with Playwright's `APIRequestContext` as the foundation for API communication.
 
-ChatGPT was used to help with:
+The framework is designed to demonstrate how API automation can be structured as a **real-world test solution**, rather than simply creating individual API test scripts.
 
-* Framework structure and folder organization
-* TypeScript and Playwright implementation guidance
-* API client and reusable fixture design
-* Schema validation and assertion strategies
-* Negative and authentication test scenarios
-* CI/CD pipeline configuration using GitHub Actions
-* Debugging TypeScript, Playwright, and CI/CD issues
-* Reviewing and improving the framework for maintainability
+It includes:
 
-The framework design, implementation decisions, test scenarios, debugging, execution, and validation were performed iteratively by me. ChatGPT was used as a **technical assistant and second pair of eyes**, rather than as a replacement for understanding or validating the automation.
+* 🔌 API functional testing
+* ✅ Positive testing
+* ❌ Negative testing
+* 🔐 Authentication testing
+* 🔄 CRUD workflow testing
+* 🧾 Response schema validation using Zod
+* ♻️ Reusable API assertions
+* 🚦 Smoke testing
+* 🔁 Regression testing
+* 📘 TypeScript validation
+* 🔒 Secure environment configuration
+* 📊 Playwright reporting
+* 🌳 Git version control
+* 🚀 GitHub Actions CI/CD
 
-This approach helped me build the framework incrementally—from the initial Playwright API setup through reusable clients, authentication, schemas, assertions, negative testing, smoke/regression execution, and GitHub Actions CI/CD.
-
----
-
-## 1. Project Overview
-
-This project demonstrates a maintainable API automation framework built from scratch using Playwright's `APIRequestContext`.
-
-The framework covers:
-
-* API functional testing
-* Positive testing
-* Negative testing
-* Authentication testing
-* CRUD workflow testing
-* Response schema validation
-* Reusable API assertions
-* Smoke testing
-* Regression testing
-* TypeScript validation
-* GitHub Actions CI/CD
-* Secure environment configuration
-* Playwright test reporting
-
-The primary API used for automation is the **Restful Booker API**.
+> **Application Under Test:** Restful Booker API
 
 ---
 
-# 2. Framework Architecture
+# 🧭 1. Understanding the Framework Design
 
-The framework follows a layered architecture:
+The goal of this project is not to create a collection of API scripts.
+
+The goal is to understand **how an API automation framework should be designed so that it can grow without becoming difficult to maintain.**
+
+A practical way to approach framework design is:
 
 ```text
-                    PLAYWRIGHT API FRAMEWORK
+1️⃣ Understand the API
+        ↓
+2️⃣ Identify business scenarios
+        ↓
+3️⃣ Identify reusable API operations
+        ↓
+4️⃣ Design the framework layers
+        ↓
+5️⃣ Create API clients
+        ↓
+6️⃣ Create reusable fixtures
+        ↓
+7️⃣ Separate test data
+        ↓
+8️⃣ Add schema validation
+        ↓
+9️⃣ Add reusable assertions
+        ↓
+🔟 Organize Smoke & Regression
+        ↓
+1️⃣1️⃣ Add reporting
+        ↓
+1️⃣2️⃣ Integrate CI/CD
+```
+
+The key principle is:
+
+> 🧠 **Tests should describe what is being tested, while API clients should handle how the API is called.**
+
+---
+
+# 🏗️ 2. Framework Architecture
+
+The framework follows a **layered architecture**.
+
+```text
+                    🧪 PLAYWRIGHT API FRAMEWORK
                               │
              ┌────────────────┴────────────────┐
              │                                 │
-         TEST CASES                         CONFIG
+        🧪 TEST LAYER                    ⚙️ CONFIGURATION
              │                                 │
-     ┌───────┼────────┐                Environment
-     │       │        │                     │
-   Smoke  Regression Negative              .env
-     │       │        │                     │
-     └───────┼────────┘                     │
-             │                              │
-             ▼                              ▼
-        API FIXTURE ───────────────► API CLIENT
-             │                         │
-             │                    Booking API
-             │                    Auth API
-             │                         │
-             ▼                         ▼
-       ASSERTIONS ◄──────────── RESPONSE
+      ┌──────┼────────┐                  Environment
+      │      │        │                       │
+    🚦      🔁       ❌                      .env
+   Smoke  Regression Negative                   │
+      │      │        │                         │
+      └──────┼────────┘                         │
+             │                                  │
+             ▼                                  │
+       🧩 API FIXTURES ───────────────► 🔌 API CLIENTS
+             │                            │
+             │                       Auth Client
+             │                       Booking Client
+             │                            │
+             ▼                            ▼
+       🔍 ASSERTIONS ◄────────────── 📦 API RESPONSE
              │
              ▼
-       ZOD SCHEMAS
+       🧾 ZOD SCHEMAS
              │
              ▼
-        TEST REPORT
+        📊 TEST REPORT
              │
              ▼
-       GITHUB ACTIONS
+        🚀 GITHUB ACTIONS
              │
-       ┌─────┴─────┐
-       ▼           ▼
-     SMOKE      REGRESSION
-```
-
-### Core execution flow
-
-```text
-Test
-  ↓
-Fixture
-  ↓
-API Client
-  ↓
-API Request
-  ↓
-API Response
-  ↓
-Schema Validation
-  ↓
-Assertions
-  ↓
-Test Report
-  ↓
-CI/CD
+        ┌────┴─────┐
+        ▼          ▼
+      SMOKE     REGRESSION
 ```
 
 ---
 
-# 3. Project Structure
+# 🔄 3. Core Execution Flow
+
+The complete execution flow can be simplified to:
+
+```text
+🧪 Test
+   ↓
+🧩 Fixture
+   ↓
+🔌 API Client
+   ↓
+🌐 API Request
+   ↓
+📦 API Response
+   ↓
+🧾 Schema Validation
+   ↓
+🔍 Assertions
+   ↓
+📊 Test Report
+   ↓
+🚀 CI/CD
+```
+
+Each layer has a specific responsibility.
+
+That separation is what makes the framework easier to maintain.
+
+---
+
+# 📁 4. Project Structure
 
 ```text
 APIwithPlaywright/
 │
-├── clients/
+├── 📁 clients/
 │   ├── auth.client.ts
 │   └── booking.client.ts
 │
-├── config/
+├── 📁 config/
 │   └── environment.ts
 │
-├── data/
+├── 📁 data/
 │   └── booking.data.ts
 │
-├── fixtures/
+├── 📁 fixtures/
 │   └── api.fixture.ts
 │
-├── schemas/
+├── 📁 schemas/
 │   └── booking schemas
 │
-├── utils/
+├── 📁 utils/
 │   └── api.assertions.ts
 │
-├── tests/
-│   └── api/
-│       └── booking/
+├── 📁 tests/
+│   └── 📁 api/
+│       └── 📁 booking/
 │           ├── booking-get.spec.ts
 │           ├── booking-post.spec.ts
 │           │
-│           ├── negative/
+│           ├── 📁 negative/
 │           │   ├── booking-negative.spec.ts
 │           │   └── booking-auth-negative.spec.ts
 │           │
-│           └── workflows/
+│           └── 📁 workflows/
 │               └── booking-crud.spec.ts
 │
-├── .github/
-│   └── workflows/
+├── 📁 .github/
+│   └── 📁 workflows/
 │       └── playwright.yml
 │
-├── .env
-├── .env.example
-├── .gitignore
-├── package.json
-├── package-lock.json
-├── playwright.config.ts
-└── tsconfig.json
+├── 📄 .env
+├── 📄 .env.example
+├── 📄 .gitignore
+├── 📄 package.json
+├── 📄 package-lock.json
+├── 📄 playwright.config.ts
+└── 📄 tsconfig.json
 ```
 
 ---
 
-# 4. Responsibility of Each Layer
+# 🧩 5. Responsibility of Each Layer
 
-| Layer                | Responsibility                             |
-| -------------------- | ------------------------------------------ |
-| `tests/`             | Business scenarios and test cases          |
-| `clients/`           | API endpoint implementation                |
-| `fixtures/`          | Reusable test setup and API dependencies   |
-| `schemas/`           | API response structure and type validation |
-| `utils/`             | Reusable assertions                        |
-| `data/`              | Test data models                           |
-| `config/`            | Environment configuration                  |
-| `.github/workflows/` | CI/CD execution                            |
+| Layer                   | Responsibility                                |
+| ----------------------- | --------------------------------------------- |
+| 🧪 `tests/`             | Business scenarios and test cases             |
+| 🔌 `clients/`           | API endpoint implementation                   |
+| 🧩 `fixtures/`          | Reusable test setup and API dependencies      |
+| 🧾 `schemas/`           | API response structure and runtime validation |
+| 🔍 `utils/`             | Reusable API assertions                       |
+| 📦 `data/`              | Test data and payload models                  |
+| ⚙️ `config/`            | Environment configuration                     |
+| 🚀 `.github/workflows/` | CI/CD execution                               |
 
-The main design principle is:
+### The most important separation
 
-> **Tests describe what is being tested. Clients describe how the API is called.**
+```text
+Tests
+  ↓
+What are we testing?
 
-This prevents HTTP implementation details from being duplicated throughout the test suite.
+Clients
+  ↓
+How do we call the API?
+
+Schemas
+  ↓
+What should the response look like?
+
+Assertions
+  ↓
+What makes the test pass or fail?
+
+Configuration
+  ↓
+Which environment and credentials are being used?
+```
 
 ---
 
-# 5. API Client Layer
+# 🔌 6. API Client Layer
 
-## Booking Client
+The API client layer contains reusable implementations for interacting with API endpoints.
 
-`clients/booking.client.ts` contains reusable booking API operations.
+Instead of placing HTTP request logic directly inside every test, the framework centralizes it inside dedicated clients.
 
-The client currently supports operations such as:
+---
+
+## 📦 Booking Client
+
+`clients/booking.client.ts` contains reusable booking operations.
+
+The client supports operations such as:
 
 ```text
 GET    /booking
@@ -197,7 +252,7 @@ PATCH  /booking/{id}
 DELETE /booking/{id}
 ```
 
-Instead of writing HTTP request logic repeatedly inside tests:
+Instead of writing this repeatedly inside tests:
 
 ```typescript
 request.get('/booking/123');
@@ -205,7 +260,7 @@ request.post('/booking');
 request.put('/booking/123');
 ```
 
-tests use reusable client methods:
+the test can use meaningful client methods:
 
 ```typescript
 bookingClient.getBookingById(bookingId);
@@ -217,17 +272,21 @@ bookingClient.updateBooking(bookingId, bookingData);
 bookingClient.deleteBooking(bookingId);
 ```
 
+### Why?
+
+Because the test should communicate **business intent**, not HTTP implementation details.
+
 ### Benefits
 
-* Reduces duplication
-* Centralizes endpoint implementation
-* Makes tests easier to read
-* Simplifies maintenance
-* Makes API operations reusable
+* ♻️ Reduces duplication
+* 📍 Centralizes endpoint implementation
+* 📖 Makes tests easier to read
+* 🛠️ Simplifies maintenance
+* 🔄 Makes API operations reusable
 
 ---
 
-# 6. Authentication Client
+# 🔐 7. Authentication Client
 
 `clients/auth.client.ts` is responsible for authentication.
 
@@ -238,28 +297,26 @@ Username + Password
         ↓
       /auth
         ↓
- Authentication Token
+🔑 Authentication Token
         ↓
-Authenticated API operations
+Authenticated API Operations
 ```
 
-Credentials are obtained from the environment configuration instead of being hardcoded.
+Credentials are retrieved from environment configuration instead of being hardcoded into test cases.
 
-Authenticated booking operations use the generated token through the appropriate authorization mechanism.
-
-This separates authentication logic from business API logic.
+This keeps authentication logic separate from business API operations.
 
 ---
 
-# 7. Environment Configuration
+# ⚙️ 8. Environment Configuration
 
-Environment configuration is centralized in:
+Environment-specific configuration is centralized in:
 
 ```text
 config/environment.ts
 ```
 
-The framework uses:
+Typical configuration values include:
 
 ```text
 API_BASE_URL
@@ -279,7 +336,7 @@ API_PASSWORD=<your-api-password>
 
 The `.env` file is excluded from Git using `.gitignore`.
 
-A `.env.example` file is maintained as a template:
+A `.env.example` file provides a safe template:
 
 ```text
 API_BASE_URL=
@@ -287,19 +344,21 @@ API_USERNAME=
 API_PASSWORD=
 ```
 
-This allows developers to understand which variables are required without exposing credentials.
+This gives new developers a clear understanding of the required configuration without exposing credentials.
+
+> 🔒 **Never commit real credentials or secrets to source control.**
 
 ---
 
-# 8. Fixtures
+# 🧩 9. Playwright Fixtures
 
-The framework uses a reusable Playwright API fixture:
+The framework uses a reusable API fixture:
 
 ```text
 fixtures/api.fixture.ts
 ```
 
-The fixture provides reusable API dependencies to tests.
+The fixture provides API dependencies required by tests.
 
 Instead of every test manually creating:
 
@@ -307,12 +366,12 @@ Instead of every test manually creating:
 APIRequestContext
 AuthClient
 BookingClient
-Authentication token
+Authentication Token
 ```
 
-the fixture manages the required setup.
+the fixture can manage the required setup.
 
-Tests can therefore directly consume:
+Tests can then consume the required dependency directly:
 
 ```typescript
 async ({ bookingClient })
@@ -320,21 +379,19 @@ async ({ bookingClient })
 
 ### Benefits
 
-* Reusable setup
-* Less duplicated code
-* Cleaner tests
-* Centralized dependency management
-* Easier authentication handling
+* ♻️ Reusable setup
+* 🧹 Cleaner tests
+* 🚫 Less duplicated code
+* 🔧 Centralized dependency management
+* 🔐 Easier authentication handling
 
 ---
 
-# 9. Test Data
+# 📦 10. Test Data
 
 Test data is separated from API implementation.
 
-The framework uses a booking data model to represent valid booking payloads.
-
-For example:
+The booking data model contains fields such as:
 
 ```text
 firstname
@@ -345,62 +402,67 @@ bookingdates
 additionalneeds
 ```
 
-This allows positive tests to use strongly typed data while negative tests can intentionally provide malformed or incomplete payloads when required.
+This allows tests to work with structured and strongly typed test data.
+
+For negative testing, invalid or incomplete payloads can intentionally be created to verify API error handling.
+
+The principle is:
+
+> **Separate the data used by the test from the code that performs the API operation.**
 
 ---
 
-# 10. Schema Validation
+# 🧾 11. Response Schema Validation
 
-The framework uses **Zod** for response schema validation.
+The framework uses **Zod** for runtime API response schema validation.
 
-HTTP status validation alone is not sufficient.
-
-For example:
+A status code such as:
 
 ```text
 HTTP 200
 ```
 
-only tells us that the request was accepted successfully.
+only tells us that the API returned a successful HTTP response.
 
-It does not guarantee that the response body has the correct:
+It does **not** guarantee that the response body contains the expected structure.
 
-* fields
-* data types
-* nested structure
-* required properties
+For example, we may need to verify:
 
-Schema validation provides an additional API contract check.
+* Required fields
+* Data types
+* Nested objects
+* Array structures
+* Response properties
 
-Conceptually:
+The validation flow becomes:
 
 ```text
-API Response
-     │
-     ├── HTTP Status
-     │
-     ├── Content Type
-     │
-     └── Response Schema
-             │
-             ├── Required fields
-             ├── Data types
-             └── Nested structure
+📦 API Response
+      │
+      ├── HTTP Status
+      │
+      ├── Content Type
+      │
+      └── 🧾 Zod Schema
+              │
+              ├── Required fields
+              ├── Data types
+              └── Response structure
 ```
 
-This helps detect API contract and serialization issues that may not be visible through status-code assertions alone.
+This gives the framework an additional layer of **API contract validation**.
 
 ---
 
-# 11. Reusable Assertions
+# 🔍 12. Reusable API Assertions
 
-Common API validations are centralized in:
+Common validations are centralized in:
 
 ```text
 utils/api.assertions.ts
 ```
 
-The framework contains reusable assertions such as:
+Examples include:
 
 ```text
 expectStatus()
@@ -408,46 +470,46 @@ expectResponseOk()
 expectJsonContentType()
 ```
 
-Instead of duplicating status validation throughout every test, tests can use a common assertion utility.
-
-Example:
+Instead of repeating the same validation logic throughout every test:
 
 ```typescript
 expectStatus(response, 200);
 ```
 
+can be reused wherever required.
+
 ### Benefits
 
-* Consistent validations
-* Reduced duplication
-* Easier maintenance
-* Cleaner test cases
-* Centralized error messages
+* ♻️ Consistent validation
+* 🧹 Less duplicated code
+* 📖 Cleaner tests
+* 🛠️ Easier maintenance
+* 💬 Consistent failure messages
 
 ---
 
-# 12. Positive API Testing
+# ✅ 13. Positive API Testing
 
-The framework contains positive scenarios for booking APIs.
+The framework contains positive API scenarios covering expected behavior.
 
 Examples include:
 
 ```text
-Get all bookings
-Get booking by ID
-Create booking
-Update booking
-Partial update
-Delete booking
+GET all bookings
+GET booking by ID
+CREATE booking
+UPDATE booking
+PATCH booking
+DELETE booking
 ```
 
-These validate expected API behavior under valid conditions.
+These scenarios verify that the API behaves correctly when valid requests and data are provided.
 
 ---
 
-# 13. Negative API Testing
+# ❌ 14. Negative API Testing
 
-Negative scenarios are maintained separately:
+Negative scenarios are organized separately under:
 
 ```text
 tests/api/booking/negative/
@@ -462,11 +524,11 @@ Examples include:
 * Missing authentication
 * Invalid authentication token
 
-Negative testing verifies that the API rejects invalid requests correctly.
+The purpose is to verify that the API **rejects invalid requests correctly**.
 
-An important principle used in the framework is:
+An important testing principle is:
 
-> **Expected errors are successful test outcomes when the test is intentionally validating error handling.**
+> 🎯 **An expected error is a successful test outcome when the test is specifically validating that error condition.**
 
 For example:
 
@@ -475,42 +537,42 @@ Invalid authentication
         ↓
 403 Forbidden
         ↓
-Expected
+Expected behavior
         ↓
-Test passes
+✅ Test Passes
 ```
 
 ---
 
-# 14. Authentication Negative Testing
+# 🔐 15. Authentication Negative Testing
 
-The framework contains dedicated authentication-negative scenarios.
+Dedicated authentication-negative scenarios validate protected API operations.
 
 Examples:
 
 ```text
 Update without authentication
-Update using an invalid authentication token
+Update with invalid authentication token
 ```
 
-The API is expected to reject these requests.
+The API is expected to reject unauthorized requests.
 
 For example:
 
 ```text
-Expected response:
+Expected:
 403 Forbidden
 ```
 
-A `403` appearing in the test log does not necessarily mean the test failed.
+Therefore, seeing `403` in the test output does **not automatically mean the test failed**.
 
 The test passes when the actual response matches the expected behavior.
 
 ---
 
-# 15. CRUD Workflow Testing
+# 🔄 16. CRUD Workflow Testing
 
-The framework contains an API workflow test:
+The framework contains an end-to-end API workflow:
 
 ```text
 tests/api/booking/workflows/booking-crud.spec.ts
@@ -521,26 +583,28 @@ The workflow validates multiple API operations together.
 Conceptually:
 
 ```text
-CREATE
-  ↓
-READ
-  ↓
-UPDATE
-  ↓
-VERIFY
-  ↓
-DELETE
-  ↓
-VERIFY
+🆕 CREATE
+   ↓
+📖 READ
+   ↓
+✏️ UPDATE
+   ↓
+🔍 VERIFY
+   ↓
+🗑️ DELETE
+   ↓
+🔍 VERIFY
 ```
 
-This differs from isolated endpoint testing because it validates that multiple API operations work together as a business flow.
+This is different from testing each endpoint independently.
+
+A CRUD workflow validates that multiple API operations work correctly **together as a business flow**.
 
 ---
 
-# 16. Smoke Testing
+# 🚦 17. Smoke Testing
 
-Smoke tests represent the critical API functionality that should be validated quickly.
+Smoke testing focuses on critical functionality that should be validated quickly.
 
 The framework uses the Playwright tag:
 
@@ -554,16 +618,22 @@ Current smoke suite:
 2 tests
 ```
 
-Execution:
+Run smoke tests using:
 
 ```bash
 npm run test:smoke
 ```
 
-which runs:
+Conceptually:
 
-```bash
-playwright test tests/api --grep @smoke
+```text
+🚦 Smoke Test
+     ↓
+Critical API functionality
+     ↓
+Fast feedback
+     ↓
+Release confidence
 ```
 
 Smoke testing answers:
@@ -572,9 +642,9 @@ Smoke testing answers:
 
 ---
 
-# 17. Regression Testing
+# 🔁 18. Regression Testing
 
-Regression tests provide broader coverage.
+Regression testing provides broader API coverage.
 
 The framework uses:
 
@@ -588,16 +658,10 @@ Current regression suite:
 7 tests
 ```
 
-Execution:
+Run regression tests using:
 
 ```bash
 npm run test:regression
-```
-
-which runs:
-
-```bash
-playwright test tests/api --grep @regression
 ```
 
 Regression testing answers:
@@ -606,32 +670,36 @@ Regression testing answers:
 
 ---
 
-# 18. Smoke vs Regression
+# ⚖️ 19. Smoke vs Regression
 
 ```text
-Smoke
-  ↓
-Small
-Fast
-Critical functionality
-2 tests
-
-Regression
-  ↓
-Broader coverage
-More scenarios
-7 tests
+             TEST SUITE
+                 │
+        ┌────────┴────────┐
+        ▼                 ▼
+     🚦 SMOKE          🔁 REGRESSION
+        │                 │
+      Small             Larger
+      Fast              Broader
+      Critical          Comprehensive
+      2 tests           7 tests
 ```
 
-Smoke provides fast confidence.
+### Smoke
 
-Regression provides broader confidence.
+Used for **fast confidence**.
+
+### Regression
+
+Used for **broader confidence**.
+
+Both serve different purposes and should not be treated as interchangeable.
 
 ---
 
-# 19. TypeScript Validation
+# 📘 20. TypeScript Validation
 
-The framework performs a TypeScript validation before executing API tests:
+The framework performs TypeScript validation before API test execution:
 
 ```bash
 npx tsc --project tsconfig.json --noEmit
@@ -639,7 +707,7 @@ npx tsc --project tsconfig.json --noEmit
 
 The `--noEmit` option validates the TypeScript project without generating JavaScript output.
 
-This catches issues such as:
+This can detect issues such as:
 
 * Invalid imports
 * Incorrect types
@@ -648,36 +716,36 @@ This catches issues such as:
 * Type mismatches
 * Syntax errors
 
-The validation is also executed in CI.
+TypeScript validation is also incorporated into the CI pipeline.
 
 ---
 
-# 20. CI/CD Pipeline
+# 🚀 21. CI/CD with GitHub Actions
 
 The framework is integrated with **GitHub Actions**.
 
-Workflow:
+The CI pipeline follows this flow:
 
 ```text
-Git Push / Pull Request
-          ↓
-    GitHub Actions
-          ↓
-   Checkout Repository
-          ↓
-    Setup Node.js
-          ↓
-      npm ci
-          ↓
-Install Playwright Browsers
-          ↓
- TypeScript Validation
-          ↓
-     Smoke Tests
-          ↓
-   Regression Tests
-          ↓
- Upload Playwright Report
+👨‍💻 Git Push / Pull Request
+            ↓
+      🐙 GitHub Actions
+            ↓
+    📥 Checkout Repository
+            ↓
+     🟢 Setup Node.js
+            ↓
+        📦 npm ci
+            ↓
+🎭 Install Playwright Browsers
+            ↓
+    📘 TypeScript Validation
+            ↓
+       🚦 Smoke Tests
+            ↓
+     🔁 Regression Tests
+            ↓
+     📊 Upload Report
 ```
 
 The workflow is defined in:
@@ -688,13 +756,13 @@ The workflow is defined in:
 
 ---
 
-# 21. CI/CD Triggers
+# 🔄 22. CI/CD Triggers
 
-The pipeline currently supports:
+The pipeline supports multiple execution methods.
 
 ### Push
 
-The pipeline runs when code is pushed to:
+Runs when code is pushed to:
 
 ```text
 main
@@ -702,7 +770,7 @@ main
 
 ### Pull Request
 
-The pipeline runs when a pull request targets:
+Runs when a pull request targets:
 
 ```text
 main
@@ -716,15 +784,15 @@ The workflow also supports:
 workflow_dispatch
 ```
 
-This allows a tester or developer to manually execute the pipeline from GitHub Actions.
+This allows a tester or developer to manually trigger the pipeline from GitHub Actions.
 
 ---
 
-# 22. CI Environment Secrets
+# 🔒 23. CI/CD Secrets
 
-Credentials are never stored directly in the GitHub workflow.
+Sensitive credentials are not stored directly inside the workflow.
 
-The workflow receives:
+The CI pipeline receives:
 
 ```text
 API_BASE_URL
@@ -734,25 +802,29 @@ API_PASSWORD
 
 from GitHub repository secrets.
 
-Conceptually:
+The flow is:
 
 ```text
-GitHub Secrets
-      ↓
-GitHub Actions Environment Variables
-      ↓
-environment.ts
-      ↓
-API Client
+🔐 GitHub Secrets
+       ↓
+🚀 GitHub Actions
+       ↓
+⚙️ Environment Variables
+       ↓
+config/environment.ts
+       ↓
+🔌 API Client
 ```
 
-This prevents sensitive credentials from being committed to source control.
+This prevents credentials from being committed to source control.
 
 ---
 
-# 23. Playwright Reporting
+# 📊 24. Playwright Reporting
 
-After test execution, the GitHub Actions workflow uploads:
+Playwright reporting is used to provide execution visibility.
+
+After execution, the CI workflow uploads:
 
 ```text
 playwright-report/
@@ -760,9 +832,9 @@ playwright-report/
 
 as a GitHub Actions artifact.
 
-This allows failed or completed test runs to be investigated after the CI job finishes.
+This allows the test report to be reviewed even after the CI job has completed.
 
-The report is configured to be retained for:
+The report is configured with a retention period of:
 
 ```text
 30 days
@@ -770,144 +842,184 @@ The report is configured to be retained for:
 
 ---
 
-# 24. Current Test Execution
+# 📈 25. Current Test Coverage
 
 The current framework contains:
 
 ```text
-Smoke       → 2 tests
-Regression  → 7 tests
+🚦 Smoke
+   2 tests
+
+🔁 Regression
+   7 tests
 ```
 
 Recent CI validation confirmed:
 
 ```text
 Smoke:
-2 passed
+✅ 2 passed
 
 Regression:
-7 passed
+✅ 7 passed
 ```
 
-The regression suite also includes authentication-negative scenarios where `403 Forbidden` is an expected API response.
+The regression suite also includes authentication-negative scenarios where:
+
+```text
+403 Forbidden
+```
+
+is an **expected response**.
 
 ---
 
-# 25. Why This Architecture?
+# 🧠 26. How to Think About Adding a New API Test
 
-The framework follows the principle of separation of responsibilities.
+When adding a new test, avoid immediately writing request code inside the test.
+
+Follow this process:
+
+### 1️⃣ Identify the business scenario
 
 ```text
-Tests
-  ↓
-Describe business scenarios
+User should be able to create a booking
+```
 
-Fixtures
-  ↓
-Provide reusable dependencies
+### 2️⃣ Identify the API endpoint
 
-Clients
-  ↓
-Handle API operations
+```text
+POST /booking
+```
 
-Schemas
-  ↓
-Validate response contracts
+### 3️⃣ Check whether a client method exists
 
-Assertions
-  ↓
-Validate expected behavior
+```text
+bookingClient.createBooking()
+```
+
+### 4️⃣ Prepare test data
+
+```text
+booking.data.ts
+```
+
+### 5️⃣ Send the request through the client
+
+```text
+Test
+ ↓
+BookingClient
+ ↓
+POST /booking
+```
+
+### 6️⃣ Validate the response
+
+```text
+Status
+ ↓
+Content Type
+ ↓
+Schema
+ ↓
+Business Assertions
+```
+
+### 7️⃣ Add the appropriate tag
+
+```text
+@smoke
+```
+
+or:
+
+```text
+@regression
+```
+
+### 8️⃣ Run locally
+
+```text
+Test → Validate → Debug → Commit
+```
+
+This keeps the framework consistent as more tests are added.
+
+---
+
+# 🧩 27. Separation of Responsibilities
+
+One of the most important concepts in this framework is **separation of concerns**.
+
+### ❌ Avoid
+
+```text
+Test
+ ├── HTTP request implementation
+ ├── Authentication
+ ├── Test data
+ ├── Schema validation
+ ├── Assertions
+ └── Business logic
+```
+
+Everything becomes mixed together.
+
+### ✅ Prefer
+
+```text
+Test
+ └── Business scenario
+
+Fixture
+ └── Test dependencies
+
+API Client
+ └── API implementation
+
+Schema
+ └── Response contract
+
+Assertion Utility
+ └── Common validations
+
+Test Data
+ └── Input data
 
 Configuration
-  ↓
-Manage environments and credentials
+ └── Environment & credentials
 
 CI/CD
-  ↓
-Execute and report automatically
+ └── Automated execution
 ```
 
-This makes the framework easier to:
-
-* Maintain
-* Extend
-* Debug
-* Reuse
-* Scale
-* Integrate into CI/CD
+This architecture reduces coupling between individual components.
 
 ---
 
-# 26. How to Run Locally
+# 🐛 28. Debugging Approach
 
-## Install dependencies
-
-```bash
-npm ci
-```
-
-## Configure environment
-
-Create a `.env` file:
+When an API test fails, investigate systematically.
 
 ```text
-API_BASE_URL=<your-api-base-url>
-API_USERNAME=<your-api-username>
-API_PASSWORD=<your-api-password>
-```
-
-## Validate TypeScript
-
-```bash
-npx tsc --project tsconfig.json --noEmit
-```
-
-## Run all API tests
-
-```bash
-npm run test:api
-```
-
-## Run smoke tests
-
-```bash
-npm run test:smoke
-```
-
-## Run regression tests
-
-```bash
-npm run test:regression
-```
-
-## Open Playwright report
-
-```bash
-npm run report
-```
-
----
-
-# 27. Debugging Approach
-
-When a test fails, the framework provides multiple layers for investigation.
-
-```text
-Test Failure
-     ↓
+❌ Test Failure
+      ↓
 Check HTTP Status
-     ↓
+      ↓
 Check Response Body
-     ↓
+      ↓
 Check Request Payload
-     ↓
+      ↓
 Check Authentication
-     ↓
+      ↓
 Check Schema Validation
-     ↓
-Check Assertion
-     ↓
+      ↓
+Check Assertions
+      ↓
 Check Playwright Report
+      ↓
+🔍 Identify Root Cause
 ```
 
 For CI failures:
@@ -919,201 +1031,268 @@ Failed Step
       ↓
 Test Output
       ↓
-Playwright Report Artifact
+Playwright Report
       ↓
 Root Cause Analysis
 ```
 
+The objective is not simply to make the test green.
+
+The objective is to determine whether:
+
+```text
+Application defect
+        OR
+Automation defect
+        OR
+Test-data issue
+        OR
+Environment issue
+```
+
+caused the failure.
+
 ---
 
-# 28. Example Framework Flow
+# 🔄 29. Example API Execution Flow
 
 For a create-booking test:
 
 ```text
-Test
- │
- │ bookingClient.createBooking()
- ▼
-BookingClient
- │
- │ POST /booking
- ▼
-Restful Booker API
- │
- │ JSON Response
- ▼
-Response
- │
- ├── Status validation
- │
- ├── Content-Type validation
- │
- ├── Zod schema validation
- │
- └── Business assertions
-        │
-        ▼
-      PASS / FAIL
+🧪 Test
+   │
+   │ bookingClient.createBooking()
+   ▼
+🔌 BookingClient
+   │
+   │ POST /booking
+   ▼
+🌐 Restful Booker API
+   │
+   │ JSON Response
+   ▼
+📦 Response
+   │
+   ├── HTTP Status
+   │
+   ├── Content-Type
+   │
+   ├── 🧾 Zod Schema
+   │
+   └── 🔍 Business Assertions
+            │
+            ▼
+        ✅ PASS / ❌ FAIL
 ```
 
-This is the core flow to remember when explaining the framework in an interview.
+This is the core execution flow to remember when explaining the framework.
 
 ---
 
-# 29. Key Design Principles
+# 🎯 30. Key Design Principles
 
-The framework follows these principles:
+The framework is built around the following principles.
 
-### Separation of concerns
+### 🧩 Separation of Concerns
 
-Tests should not contain unnecessary HTTP implementation details.
+Each layer has a defined responsibility.
 
-### Reusability
+### ♻️ Reusability
 
-Common API operations and assertions are centralized.
+Common API operations, fixtures, schemas, and assertions are centralized.
 
-### Maintainability
+### 📖 Readability
 
-Changes to an API endpoint can be made in the client layer rather than across multiple tests.
+Tests should clearly communicate the scenario being validated.
 
-### Type safety
+### 🛠️ Maintainability
 
-TypeScript and Zod provide compile-time and runtime validation respectively.
+Changes to API implementation should ideally be isolated to the client layer.
 
-### Security
+### 📘 Type Safety
+
+TypeScript provides compile-time type checking.
+
+### 🧾 Contract Validation
+
+Zod provides runtime response schema validation.
+
+### 🔒 Security
 
 Credentials are externalized through environment variables and GitHub Secrets.
 
-### Test isolation
+### 🚦 Test Classification
 
-Tests are organized by purpose: functional, negative, workflow, smoke and regression.
+Smoke and regression tests are separated based on their purpose.
 
-### CI readiness
+### 🚀 CI/CD Readiness
 
 The framework can execute automatically through GitHub Actions.
 
 ---
 
-# 30. Framework Explanation for an Interview
+# 🤖 31. AI-Assisted Development
 
-A concise explanation of the framework:
+This framework was built **from scratch with the assistance of ChatGPT** for:
 
-> I built an API automation framework using Playwright with TypeScript. I designed it using a layered architecture where test cases are separated from API implementation.
->
-> The test layer contains positive, negative and workflow scenarios. I created API client classes for authentication and booking CRUD operations, so the HTTP implementation is centralized and reusable.
->
-> I used Playwright fixtures for reusable API setup and centralized environment configuration. Credentials are stored outside the source code using `.env` locally and GitHub Secrets in CI.
->
-> For validation, I created reusable API assertions and added Zod schema validation to validate response structure and data types in addition to HTTP status codes.
->
-> I also separated the tests into smoke and regression suites using Playwright tags. The current smoke suite contains 2 tests and the regression suite contains 7 tests.
->
-> Finally, I integrated the framework with GitHub Actions. The pipeline installs dependencies, validates TypeScript, executes smoke and regression tests, and uploads the Playwright report. The pipeline can execute automatically on push or pull requests and can also be triggered manually.
->
-> The main objective was to build a maintainable, reusable and CI-ready API automation framework rather than simply creating individual API test scripts.
+* 🧠 Framework architecture discussions
+* 📚 Learning and understanding Playwright/TypeScript concepts
+* 🐛 Debugging and troubleshooting
+* 🔍 Code review and improvement
+* 🏗️ Exploring automation design patterns
+* 📖 Improving documentation and maintainability
+
+The framework's implementation, design decisions, testing approach, and final validation were reviewed and understood during development.
+
+> **The objective was not simply to generate code, but to use AI as a development and learning assistant while understanding the architecture and implementation of the framework.**
 
 ---
 
-# 31. Framework Flow to Remember
+# 🎤 32. How to Explain This Framework in an Interview
 
-The easiest way to remember the entire framework is:
+A concise explanation could be:
+
+> **"I built an API automation framework from scratch using Playwright, TypeScript, and Playwright's APIRequestContext. I designed it using a layered architecture where the test layer contains business scenarios and the client layer handles API implementation.**
+>
+> **I created reusable clients for authentication and booking CRUD operations, Playwright fixtures for common API setup, and centralized environment configuration. I separated test data from implementation and added Zod schema validation so that we validate not only HTTP status codes but also the structure and data types of API responses.**
+>
+> **I also implemented positive, negative, authentication and CRUD workflow scenarios and organized the suite into smoke and regression tests using Playwright tags.**
+>
+> **For quality and maintainability, I added reusable API assertions, TypeScript validation and Playwright reporting. Finally, I integrated the framework with GitHub Actions so that TypeScript validation, smoke tests and regression tests can execute automatically on code changes, with the Playwright report uploaded as a CI artifact."**
+
+---
+
+# 🧠 33. Framework Flow to Remember
+
+If you need to explain the framework quickly, remember this:
 
 ```text
-TEST
-  ↓
-FIXTURE
-  ↓
-CLIENT
-  ↓
-API
-  ↓
-RESPONSE
-  ↓
-SCHEMA + ASSERTIONS
-  ↓
-REPORT
-  ↓
-CI/CD
+🧪 TEST
+   ↓
+🧩 FIXTURE
+   ↓
+🔌 CLIENT
+   ↓
+🌐 API
+   ↓
+📦 RESPONSE
+   ↓
+🧾 SCHEMA
+   +
+🔍 ASSERTIONS
+   ↓
+📊 REPORT
+   ↓
+🚀 CI/CD
 ```
 
-And remember the responsibility of each layer:
+And remember each responsibility:
 
 ```text
-Clients     → How to call the API
-Fixtures    → How to prepare the test
-Tests       → What to test
-Schemas     → What the response should look like
-Assertions  → What should pass/fail
-Config      → Where credentials/environment come from
-CI/CD       → When and where tests execute
+🔌 Clients
+→ How to call the API
+
+🧩 Fixtures
+→ How to prepare reusable dependencies
+
+🧪 Tests
+→ What to test
+
+🧾 Schemas
+→ What the response should look like
+
+🔍 Assertions
+→ What should pass or fail
+
+📦 Data
+→ What input to send
+
+⚙️ Config
+→ Which environment and credentials to use
+
+🚀 CI/CD
+→ When and where tests execute
 ```
 
 ---
 
-# 32. Future Enhancements
+# 📈 34. Future Enhancements
 
-Potential future improvements include:
+The framework can be extended further with:
 
-* Environment selection such as QA/UAT
-* Scheduled regression execution
-* API contract testing
-* Dynamic test data generation
-* Database validation
-* Enhanced reporting
-* Retry strategy for transient failures
-* Parallel execution optimization
-* Test data cleanup
-* Azure DevOps/Jira integration
-* Additional API modules beyond Booking
-* Performance and reliability monitoring
+* 🌍 Multiple environment execution such as QA/UAT
+* ⏰ Scheduled regression execution
+* 📜 API contract testing
+* 🎲 Dynamic test-data generation
+* 🗄️ Database validation
+* 📊 Enhanced reporting
+* 🔁 Retry strategies for transient failures
+* ⚡ Parallel execution optimization
+* 🧹 Automated test-data cleanup
+* 🔗 Azure DevOps/Jira integration
+* 🔌 Additional API modules
+* 📈 API reliability and performance monitoring
 
-These are **future enhancements**, not features currently claimed as implemented.
-
----
-
-# 33. Technology Stack
-
-| Technology             | Purpose                              |
-| ---------------------- | ------------------------------------ |
-| Playwright             | API automation and test execution    |
-| TypeScript             | Programming language and type safety |
-| Zod                    | Runtime schema validation            |
-| Node.js                | Runtime environment                  |
-| dotenv                 | Environment configuration            |
-| Git                    | Version control                      |
-| GitHub                 | Source repository                    |
-| GitHub Actions         | CI/CD                                |
-| Playwright HTML Report | Test reporting                       |
+These are **potential future enhancements** and are not represented as currently implemented features.
 
 ---
 
-# 34. Summary
+# 🛠️ 35. Technology Stack
 
-The framework was built with the following objective:
+| Technology                    | Purpose                              |
+| ----------------------------- | ------------------------------------ |
+| 🎭 **Playwright**             | API automation and test execution    |
+| 📘 **TypeScript**             | Programming language and type safety |
+| 🧾 **Zod**                    | Runtime schema validation            |
+| 🟢 **Node.js**                | Runtime environment                  |
+| 🔐 **dotenv**                 | Environment configuration            |
+| 🌳 **Git**                    | Version control                      |
+| 🐙 **GitHub**                 | Source repository                    |
+| 🚀 **GitHub Actions**         | CI/CD                                |
+| 📊 **Playwright HTML Report** | Test reporting                       |
 
-> **Build a maintainable API automation framework that separates test scenarios from API implementation, validates both API behavior and response contracts, supports negative testing, and executes reliably through CI/CD.**
+---
 
-Core architecture:
+# 🏁 36. Final Takeaway
+
+A good API automation framework is **more than a collection of API requests**.
+
+It should provide structure around:
 
 ```text
-Playwright
-    +
-TypeScript
-    +
-API Clients
-    +
-Fixtures
-    +
-Zod Schemas
-    +
-Reusable Assertions
-    +
-Positive / Negative / Workflow Tests
-    +
-Smoke / Regression
-    +
-GitHub Actions
-    =
-Maintainable API Automation Framework
+🧪 Test Design
+      +
+🔌 API Abstraction
+      +
+🧩 Reusable Fixtures
+      +
+📦 Test Data
+      +
+🧾 Schema Validation
+      +
+🔍 Assertions
+      +
+🔒 Secure Configuration
+      +
+🚦 Smoke Testing
+      +
+🔁 Regression Testing
+      +
+📊 Reporting
+      +
+🚀 CI/CD
 ```
+
+The result is a framework that is:
+
+**Readable → Reusable → Maintainable → Scalable → CI/CD Ready**
+
+---
+
+## 🎯 One-Line Definition
+
+> **A Playwright TypeScript API automation framework that uses reusable API clients, fixtures, schema validation, centralized assertions, secure configuration, smoke/regression suites, and GitHub Actions to provide maintainable and scalable API test automation.**
+
+
+#🤖 **AI-Assisted Development**
+This framework was built from scratch with the assistance of ChatGPT for framework design discussions, Playwright/TypeScript learning, debugging, code review, and exploring best practices. The implementation and architectural decisions were reviewed, tested, and understood during development.
